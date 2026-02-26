@@ -6,5 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class score extends Model
 {
-    protected $guarded = [];
+    protected $fillable = [
+        'siswa_id',
+        'guru_id',
+        'mapel_id',
+        'nilai',
+        'Periode_rapot',
+        'keterangan'
+    ];
 }
