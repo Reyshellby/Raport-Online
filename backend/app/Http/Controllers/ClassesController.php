@@ -27,7 +27,7 @@ class ClassesController extends Controller
     {
         $validated = $request->validate([
             'nama_kelas' => 'required|string',
-            'tingkat_kelas' => 'required|between:10,12',
+            'tingkat_kelas' => 'required|string|in:10,11,12',
             'tahun_angkatan' => 'required|integer|min:1945',
         ]);
 
@@ -66,7 +66,7 @@ class ClassesController extends Controller
     {
         $validated = $request->validate([
             'nama_kelas' => 'required|string',
-            'tingkat_kelas' => 'required|between:10,12',
+            'tingkat_kelas' => 'required|in:10,11,12',
             'tahun_angkatan' => 'required|integer|min:1945',
         ]);
 
