@@ -8,7 +8,7 @@ use Laravel\Sanctum\HasApiTokens;
 class teacher extends Authenticatable
 {
     use HasApiTokens;
-    protected $guarded = [];
+    protected $fillable = ['nama', 'nip', 'password'];
     protected $hidden = ['password'];
     protected $casts = ['password' => 'hashed'];
 }
