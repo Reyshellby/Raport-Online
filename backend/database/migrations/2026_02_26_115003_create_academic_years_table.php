@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('students', function (Blueprint $table) {
+        Schema::create('academic_years', function (Blueprint $table) {
             $table->id();
-            $table->string('nis', 100)->unique();
-            $table->string('nama', 100);
-            $table->string('password', 100);
-            $table->foreignId('kelas_id')->constrained('classes')->onDelete('cascade');
-            $table->foreignId('jurusan_id')->constrained('majors')->onDelete('cascade');
+            $table->string('nama_tahun', 100)->unique();
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('students');
+        Schema::dropIfExists('academic_years');
     }
 };

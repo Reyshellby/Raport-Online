@@ -11,4 +11,14 @@ class student extends Authenticatable
     protected $fillable = ['nama', 'nis', 'password', 'kelas_id', 'jurusan_id'];
     protected $hidden = ['password'];
     protected $casts = ['password' => 'hashed'];
+
+    public function kelas()
+    {
+        return $this->belongsTo(classes::class);
+    }
+
+    public function nilai()
+    {
+        return $this->hasMany(score::class);
+    }
 }

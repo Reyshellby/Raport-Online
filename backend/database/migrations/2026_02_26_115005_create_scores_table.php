@@ -14,11 +14,17 @@ return new class extends Migration
         Schema::create('scores', function (Blueprint $table) {
             $table->id();
             $table->foreignId('siswa_id')->constrained('students')->onDelete('cascade');
-            $table->foreignId('mapel_id')->constrained('majors')->onDelete('cascade');
-            $table->foreignId('guru_id')->constrained('teachers')->onDelete('cascade');
+            $table->foreignId('teaching_assignment_id')->constrained('teaching_assignments')->onDelete('cascade');
+            $table->tinyInteger('semester');
+            $table->enum('kategori', ['PTS', 'PAS']);
             $table->integer('nilai')->unsigned();
-            $table->enum('Periode_rapot', ['PTS S1', 'PAS S1', 'PTS S2', 'PAS S2']);
             $table->text('keterangan')->nullable();
+            $table->unique([
+                'siswa_id',
+                'teaching_assignment_id',
+                'semester',
+                'kategori'
+            ]);
             $table->timestamps();
         });
     }

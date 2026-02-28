@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\classes;
-use Carbon\Carbon;
+use App\Models\academic_year;
 use Illuminate\Http\Request;
 
-use function Symfony\Component\Clock\now;
-
-class ClassesController extends Controller
+class AcademicYear extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data = classes::all();
+        $data = academic_year::all();
 
         return response()->json([
             'status' => 'success',
@@ -29,13 +26,11 @@ class ClassesController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_kelas' => 'required|string',
-            'tingkat_kelas' => 'required|in:10,11,12',
-            'jurusan_id' => 'required|exists:majors,id',
-            'tahun_angkatan' => 'required|integer|min:1945|max:' . Carbon::now()->year,
+            'nama_tahun' => 'required|string|unique:academic_years,nama_tahun',
+            'is_active' => 'required|boolean',
         ]);
 
-        $data = classes::create($validated);
+        $data = academic_year::create($validated);
 
         return response()->json([
             'status' => 'success',
@@ -46,11 +41,11 @@ class ClassesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $classes)
+    public function show(string $academic_year)
     {
-        $data = classes::where('nama_kelas', $classes)->first();
+        $data = academic_year::where('nama_tahun', $academic_year)->first();
 
-        if(!$data) {
+        if (!$data) {
             return response()->json([
                 'status' => 'failed',
                 'message' => 'data not found'
@@ -69,13 +64,12 @@ class ClassesController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'nama_kelas' => 'required|string',
-            'tingkat_kelas' => 'required|in:10,11,12',
+            'is_active' => 'required|boolean',
         ]);
 
-        $data = classes::find($id);
+        $data = academic_year::find($id);
 
-        if(!$data) {
+        if (!$data) {
             return response()->json([
                 'status' => 'failed',
                 'message' => 'data not found'
@@ -95,9 +89,9 @@ class ClassesController extends Controller
      */
     public function destroy(string $id)
     {
-        $data = classes::find($id);
+        $data = academic_year::find($id);
 
-        if(!$data) {
+        if (!$data) {
             return response()->json([
                 'status' => 'failed',
                 'message' => 'data not found'
@@ -108,7 +102,7 @@ class ClassesController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Class has been delete'
+            'message' => 'Academic Year has been delete'
         ], 200);
     }
 }

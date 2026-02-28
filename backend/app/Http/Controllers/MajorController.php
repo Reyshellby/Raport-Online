@@ -34,7 +34,7 @@ class MajorController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $data
-        ], 200);
+        ], 201);
     }
 
     /**
@@ -78,7 +78,7 @@ class MajorController extends Controller
         $data->update($validated);
 
         return response()->json([
-            'status' => 'success',
+            'status' => 'updated',
             'data' => $data
         ], 200);
     }
@@ -101,7 +101,7 @@ class MajorController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'data has been delete'
+            'message' => 'Major has been delete'
         ], 200);
     }
 }
