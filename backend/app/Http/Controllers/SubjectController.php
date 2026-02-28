@@ -12,7 +12,12 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        //
+        $data = subject::all();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $data
+        ], 200);
     }
 
     /**
@@ -20,30 +25,83 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nama_mapel' => 'required|string',
+        ]);
+
+        $data = subject::create($validated);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $data
+        ], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(subject $subject)
+    public function show(string $subject)
     {
-        //
+        $data = subject::where('nama_mapel', $subject)->first();
+
+        if(!$data) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'data not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $data
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, subject $subject)
+    public function update(Request $request, string $id)
     {
-        //
+         $validated = $request->validate([
+            'nama_mapel' => 'required|string',
+        ]);
+
+        $data = subject::find($id);
+
+        if(!$data) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'data not found'
+            ], 404);
+        }
+
+        $data->update($validated);
+
+        return response()->json([
+            'status' => 'updated',
+            'data' => $data
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(subject $subject)
+    public function destroy(string $id)
     {
-        //
+        $data = subject::find($id);
+
+        if(!$data) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'data not found'
+            ], 404);
+        }
+
+        $data->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Subject has been delete'
+        ], 200);
     }
 }
