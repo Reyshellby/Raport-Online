@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class TeacherController extends Controller
 {
@@ -37,6 +38,41 @@ class TeacherController extends Controller
             'status' => 'success',
             'data' => $data
         ], 201);
+    }
+
+    public function login(Request $request)
+    {
+        $validated = $request->validate([
+            'nip' => 'required',
+            'password' => 'required|min:8',
+        ]);
+
+        $teacher = teacher::where('nip', $validated['nip'])->first();
+
+        if (!$teacher || !Hash::check($validated['password'], $teacher->password)) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Credential is invalid'
+            ], 401);
+        }
+
+        $token = $teacher->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'status' => 'success',
+            'token' => $token,
+            'data' => $teacher
+        ], 200);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'logout success'
+        ], 200);
     }
 
     /**
