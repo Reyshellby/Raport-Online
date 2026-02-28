@@ -138,7 +138,7 @@ class StudentController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Teacher has been delete'
+            'message' => 'Student has been delete'
         ], 200);
     }
 }
