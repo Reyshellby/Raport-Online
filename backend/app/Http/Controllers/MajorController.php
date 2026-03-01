@@ -10,7 +10,7 @@ class MajorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function getAllMajor()
     {
         $data = major::all();
 
@@ -23,7 +23,7 @@ class MajorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function createMajor(Request $request)
     {
         $validated = $request->validate([
             'nama_jurusan' => 'required|string'
@@ -40,7 +40,7 @@ class MajorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $major)
+    public function showMajor(string $major)
     {
         $data = major::where('nama_jurusan', $major)->first();
 
@@ -60,7 +60,7 @@ class MajorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function updateMajor(Request $request, string $id)
     {
         $validated = $request->validate([
             'nama_jurusan' => 'required|string'
@@ -86,7 +86,7 @@ class MajorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroyMajor(string $id)
     {
         $data = major::find($id);
 

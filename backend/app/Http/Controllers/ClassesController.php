@@ -13,7 +13,7 @@ class ClassesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function getAllClasses()
     {
         $data = classes::all();
 
@@ -26,7 +26,7 @@ class ClassesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function createClasses(Request $request)
     {
         $validated = $request->validate([
             'nama_kelas' => 'required|string',
@@ -46,7 +46,7 @@ class ClassesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $classes)
+    public function showClasses(string $classes)
     {
         $data = classes::where('nama_kelas', $classes)->first();
 
@@ -66,7 +66,7 @@ class ClassesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function updateClasses(Request $request, string $id)
     {
         $validated = $request->validate([
             'nama_kelas' => 'required|string',
@@ -93,7 +93,7 @@ class ClassesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroyClasses(string $id)
     {
         $data = classes::find($id);
 

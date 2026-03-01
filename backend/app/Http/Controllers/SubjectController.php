@@ -10,7 +10,7 @@ class SubjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function getAllSubject()
     {
         $data = subject::all();
 
@@ -23,7 +23,7 @@ class SubjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function createSubject(Request $request)
     {
         $validated = $request->validate([
             'nama_mapel' => 'required|string',
@@ -40,7 +40,7 @@ class SubjectController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $subject)
+    public function showSubject(string $subject)
     {
         $data = subject::where('nama_mapel', $subject)->first();
 
@@ -60,7 +60,7 @@ class SubjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function updateSubject(Request $request, string $id)
     {
          $validated = $request->validate([
             'nama_mapel' => 'required|string',
@@ -86,7 +86,7 @@ class SubjectController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroySubject(string $id)
     {
         $data = subject::find($id);
 
