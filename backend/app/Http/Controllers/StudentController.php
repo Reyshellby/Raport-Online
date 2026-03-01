@@ -15,11 +15,17 @@ class StudentController extends Controller
     {
         $students = student::with('kelas')->orderBy('nama')->get();
 
-        $grouped = $students->groupBy('kelas.nama_kelas')->sortKeys();
+        $result = $students->map(function ($item) {
+            return [
+                'nama' => $item->nama,
+                'nis' => $item->nis,
+                'kelas' => $item->kelas->nama_kelas,
+            ];
+        })->groupBy('kelas')->sortKeys();
 
         return response()->json([
             'status' => 'success',
-            'data' => $grouped
+            'data' => $result
         ], 200);
     }
 
