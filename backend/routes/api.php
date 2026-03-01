@@ -2,22 +2,25 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MajorController;
+use App\Http\Controllers\AcademicYear;
 use App\Http\Controllers\ClassesController;
+use App\Http\Controllers\MajorController;
+use App\Http\Controllers\ScoreController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TeachingAssignment;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-//major
-Route::get('/major', [MajorController::class, 'index']);
-Route::get('/major/{major}', [MajorController::class, 'show']);
-Route::post('/major', [MajorController::class, 'store']);
-Route::put('/major/{id}', [MajorController::class, 'update']);
-Route::delete('/major/{id}', [MajorController::class, 'destroy']);
+Route::middleware(['auth:sanctum', 'guard:admins'])->group(function () {
+    Route::middleware(['role:superAdmin'])->group(function () {
 
-//classes
-Route::get('/classes', [ClassesController::class, 'index']);
-Route::post('/classes', [ClassesController::class, 'store']);
-Route::put('/classes/{id}', [ClassesController::class, 'update']);
-Route::delete('/classes/{id}', [ClassesController::class, 'destroy']);
+    });
+});
+
+Route::middleware(['auth:sanctum', 'guard:teachers'])->group(function () {});
+
+Route::middleware(['auth:sanctum', 'guard:students'])->group(function () {});
