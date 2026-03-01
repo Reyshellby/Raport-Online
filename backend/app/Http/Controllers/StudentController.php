@@ -13,11 +13,13 @@ class StudentController extends Controller
      */
     public function getAllStudent()
     {
-        $data = student::all();
+        $students = student::with('kelas')->orderBy('nama')->get();
+
+        $grouped = $students->groupBy('kelas.nama_kelas')->sortKeys();
 
         return response()->json([
             'status' => 'success',
-            'data' => $data
+            'data' => $grouped
         ], 200);
     }
 
@@ -81,7 +83,7 @@ class StudentController extends Controller
     {
         $data = student::where('nis', $nis)->first();
 
-        if(!$data) {
+        if (!$data) {
             return response()->json([
                 'status' => 'failed',
                 'message' => 'data not found'
