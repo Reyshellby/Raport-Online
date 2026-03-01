@@ -55,7 +55,7 @@ class StudentController extends Controller
             ], 401);
         }
 
-        $token = $student->createToken('auth_token')->plainTextToken;
+        $token = $student->createToken('Student_token')->plainTextToken;
 
         return response()->json([
             'status' => 'success',

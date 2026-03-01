@@ -56,7 +56,7 @@ class TeacherController extends Controller
             ], 401);
         }
 
-        $token = $teacher->createToken('auth_token')->plainTextToken;
+        $token = $teacher->createToken('Teacher_token')->plainTextToken;
 
         return response()->json([
             'status' => 'success',
