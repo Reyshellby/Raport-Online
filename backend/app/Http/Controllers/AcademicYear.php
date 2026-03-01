@@ -10,7 +10,7 @@ class AcademicYear extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function getAllAcademicYear()
     {
         $data = academic_year::all();
 
@@ -23,7 +23,7 @@ class AcademicYear extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function createAcademicYear(Request $request)
     {
         $validated = $request->validate([
             'nama_tahun' => 'required|string|unique:academic_years,nama_tahun',
@@ -41,7 +41,7 @@ class AcademicYear extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $academic_year)
+    public function showAcademicYear(string $academic_year)
     {
         $data = academic_year::where('nama_tahun', $academic_year)->first();
 
@@ -61,7 +61,7 @@ class AcademicYear extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function updateStatusAcademicYear(Request $request, string $id)
     {
         $validated = $request->validate([
             'is_active' => 'required|boolean',
@@ -87,7 +87,7 @@ class AcademicYear extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroyAcademicYear(string $id)
     {
         $data = academic_year::find($id);
 

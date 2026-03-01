@@ -11,7 +11,7 @@ class TeacherController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function getAllTeacher()
     {
         $data = teacher::all();
 
@@ -24,7 +24,7 @@ class TeacherController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function register(Request $request)
+    public function registerTeacher(Request $request)
     {
         $validated = $request->validate([
             'nama' => 'required|string',
@@ -40,7 +40,7 @@ class TeacherController extends Controller
         ], 201);
     }
 
-    public function login(Request $request)
+    public function loginTeacher(Request $request)
     {
         $validated = $request->validate([
             'nip' => 'required',
@@ -56,7 +56,7 @@ class TeacherController extends Controller
             ], 401);
         }
 
-        $token = $teacher->createToken('auth_token')->plainTextToken;
+        $token = $teacher->createToken('Teacher_token')->plainTextToken;
 
         return response()->json([
             'status' => 'success',
@@ -65,7 +65,7 @@ class TeacherController extends Controller
         ], 200);
     }
 
-    public function logout(Request $request)
+    public function logoutTeacher(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
 
@@ -78,7 +78,7 @@ class TeacherController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function updatePasswordTeacher(Request $request, string $id)
     {
         $validated = $request->validate([
             'password' => 'required|min:8',
@@ -104,7 +104,7 @@ class TeacherController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroyTeacher(string $id)
     {
         $data = teacher::find($id);
 

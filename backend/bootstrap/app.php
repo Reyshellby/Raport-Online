@@ -14,7 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'guard' => App\Http\Middleware\ensureGuard::class,
+            'role' => App\Http\Middleware\roleCheck::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function(ValidationException $e, $req) {
@@ -26,8 +29,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function(AuthenticationException $e, $req) {
             return response()->json([
-                'status' => 'invalid token',
+                'status' => 'Unauthenticated',
                 'message' => 'token is invalid or expired'
-            ], 403);
+            ], 401);
         });
     })->create();

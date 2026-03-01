@@ -11,7 +11,7 @@ class StudentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function getAllStudent()
     {
         $data = student::all();
 
@@ -21,7 +21,7 @@ class StudentController extends Controller
         ], 200);
     }
 
-    public function register(Request $request)
+    public function registerStudent(Request $request)
     {
         $validated = $request->validate([
             'nama' => 'required|string',
@@ -39,7 +39,7 @@ class StudentController extends Controller
         ], 201);
     }
 
-    public function login(Request $request)
+    public function loginStudent(Request $request)
     {
         $validated = $request->validate([
             'nis' => 'required',
@@ -55,7 +55,7 @@ class StudentController extends Controller
             ], 401);
         }
 
-        $token = $student->createToken('auth_token')->plainTextToken;
+        $token = $student->createToken('Student_token')->plainTextToken;
 
         return response()->json([
             'status' => 'success',
@@ -64,7 +64,7 @@ class StudentController extends Controller
         ], 200);
     }
 
-    public function logout(Request $request)
+    public function logoutStudent(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
 
@@ -77,7 +77,7 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $nis)
+    public function showStudent(string $nis)
     {
         $data = student::where('nis', $nis)->first();
 
@@ -97,7 +97,7 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function updatePasswordStudent(Request $request, string $id)
     {
         $validated = $request->validate([
             'password' => 'required|min:8',
@@ -123,7 +123,7 @@ class StudentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroyStudent(string $id)
     {
         $data = student::find($id);
 
