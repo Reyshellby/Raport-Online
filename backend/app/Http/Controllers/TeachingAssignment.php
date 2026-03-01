@@ -10,7 +10,7 @@ class TeachingAssignment extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function getAllAssignment()
+    public function getAllAssignmentForAdmin()
     {
         $assignments = teaching_assignments::with(['guru', 'mapel', 'kelas', 'tahunAjaran'])->get();
 
