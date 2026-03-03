@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama', 100);
             $table->string('nip', 100)->unique();
             $table->string('password', 100);
+            $table->string('role')->default('teacher');
             $table->timestamps();
         });
     }

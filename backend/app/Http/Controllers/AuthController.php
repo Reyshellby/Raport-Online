@@ -20,31 +20,6 @@ class AuthController extends Controller
         ]);
     }
 
-    public function UpdateRole(Request $request, string $id)
-    {
-        $validated = $request->validate([
-            'role' => 'required|in:admin,superAdmin',
-        ]);
-
-        $data = User::find($id);
-
-        if (!$data) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'data not found'
-            ], 404);
-        }
-
-        $data->update([
-            'role' => $validated['role']
-        ]);
-
-        return response()->json([
-            'status' => 'Role updated',
-            'data' => $data
-        ], 200);
-    }
-
     /**
      * Update the specified resource in storage.
      */

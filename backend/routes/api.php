@@ -15,12 +15,10 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::middleware(['auth:sanctum', 'guard:admins'])->group(function () {
-    Route::middleware(['role:superAdmin'])->group(function () {
-
-    });
+Route::middleware(['auth:sanctum', 'guard:admins', 'role:admins,admin'])->group(function () {
+    
 });
 
-Route::middleware(['auth:sanctum', 'guard:teachers'])->group(function () {});
+Route::middleware(['auth:sanctum', 'guard:teachers', 'role:teachers,teacher'])->group(function () {});
 
-Route::middleware(['auth:sanctum', 'guard:students'])->group(function () {});
+Route::middleware(['auth:sanctum', 'guard:students', 'role:students,student'])->group(function () {});

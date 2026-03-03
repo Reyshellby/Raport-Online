@@ -14,9 +14,9 @@ class roleCheck
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $role): Response
+    public function handle(Request $request, Closure $next, $guard, $role): Response
     {
-        if (Auth::user()->role != $role) {
+        if (Auth::guard($guard)->user()->role != $role) {
             return response()->json([
                 'status' => 'Forbidden Access'
             ], 403);

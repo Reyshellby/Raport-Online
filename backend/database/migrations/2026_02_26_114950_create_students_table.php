@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nis', 100)->unique();
             $table->string('nama', 100);
             $table->string('password', 100);
+            $table->string('role')->default('student');
             $table->foreignId('kelas_id')->constrained('classes')->onDelete('cascade');
             $table->foreignId('jurusan_id')->constrained('majors')->onDelete('cascade');
             $table->timestamps();
