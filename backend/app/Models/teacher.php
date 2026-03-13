@@ -13,6 +13,6 @@ class teacher extends Authenticatable
 
     public function assignments()
     {
-        return $this->hasMany(teaching_assignments::class);
+        return $this->hasMany(teaching_assignments::class, 'guruId');
     }
 }

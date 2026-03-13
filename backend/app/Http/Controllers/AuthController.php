@@ -25,11 +25,6 @@ class AuthController extends Controller
      */
     public function updateCredentialAdmin(Request $request, string $id)
     {
-        $validated = $request->validate([
-            'password' => 'required|min:8',
-            'username' => 'required|string',
-        ]);
-
         $data = User::find($id);
 
         if (!$data) {
@@ -39,10 +34,21 @@ class AuthController extends Controller
             ], 404);
         }
 
-        $data->update($validated);
+        $validated = $request->validate([
+            'username' => 'required|string',
+            'password' => 'nullable|min:8',
+        ]);
+
+        $data->username = $validated['username'];
+        
+        if (!empty($validated['password'])) {
+            $data->password = $validated['password'];
+        }
+
+        $data->save();
 
         return response()->json([
-            'status' => 'updated',
+            'status' => 'success',
             'data' => $data
         ], 200);
     }

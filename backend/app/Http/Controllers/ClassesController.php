@@ -15,7 +15,7 @@ class ClassesController extends Controller
      */
     public function getAllClasses()
     {
-        $data = classes::all();
+        $data = classes::with('major')->get();
 
         return response()->json([
             'status' => 'success',
@@ -30,12 +30,17 @@ class ClassesController extends Controller
     {
         $validated = $request->validate([
             'nama_kelas' => 'required|string',
-            'tingkat_kelas' => 'required|in:10,11,12',
-            'jurusan_id' => 'required|exists:majors,id',
-            'tahun_angkatan' => 'required|integer|min:1945|max:' . Carbon::now()->year,
+            'tingkat_kelas' => 'required|in:X,XI,XII',
+            'major_id' => 'required|exists:majors,id',
+            'tahun_angkatan' => 'required|integer|min:1945|max:' . (Carbon::now()->year + 1),
         ]);
 
-        $data = classes::create($validated);
+        $data = classes::create([
+            'nama_kelas' => $validated['nama_kelas'],
+            'tingkat_kelas' => $validated['tingkat_kelas'],
+            'jurusan_id' => $validated['major_id'],
+            'tahun_angkatan' => $validated['tahun_angkatan'],
+        ]);
 
         return response()->json([
             'status' => 'success',
@@ -70,7 +75,7 @@ class ClassesController extends Controller
     {
         $validated = $request->validate([
             'nama_kelas' => 'required|string',
-            'tingkat_kelas' => 'required|in:10,11,12',
+            'tingkat_kelas' => 'required|in:X,XI,XII',
         ]);
 
         $data = classes::find($id);
@@ -89,7 +94,7 @@ class ClassesController extends Controller
             'data' => $data
         ], 200);
     }
-
+ 
     /**
      * Remove the specified resource from storage.
      */
@@ -111,4 +116,27 @@ class ClassesController extends Controller
             'message' => 'Class has been delete'
         ], 200);
     }
+
+    /**
+     * Get students by class ID.
+     */
+    public function getStudentsByClass(string $id)
+    {
+        $class = classes::find($id);
+
+        if (!$class) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Class not found'
+            ], 404);
+        }
+
+        $students = $class->students()->orderBy('nama')->get(['id', 'nama', 'nis']);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $students
+        ], 200);
+    }
 }
+

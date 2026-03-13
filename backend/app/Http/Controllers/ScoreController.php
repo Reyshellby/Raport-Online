@@ -22,11 +22,14 @@ class ScoreController extends Controller
             ->map(function ($a) {
                 return [
                     'id' => $a->id,
-                    'mapel' => $a->mapel->name,
-                    'kelas' => $a->kelas->name,
-                    'tahun_ajaran' => $a->tahunAjaran->name
+                    'mapelId' => $a->mapelId,
+                    'mapel' => $a->mapel->nama_mapel,
+                    'kelasId' => $a->kelasId,
+                    'kelas' => $a->kelas->nama_kelas,
+                    'tahunAjaranId' => $a->tahunAjaranId,
+                    'tahun_ajaran' => $a->tahunAjaran->nama_tahun
                 ];
-            })->groupBy('tahun_ajaran')->sortKeysDesc();
+            });
 
         return response()->json([
             'status' => 'success',
@@ -100,16 +103,24 @@ class ScoreController extends Controller
         ]);
     }
 
-    public function getMyScores(Request $request)
+public function getMyScores(Request $request)
     {
         $request->validate([
             'semester' => 'required|integer|min:1|max:2',
             'kategori' => 'required|in:PTS,PAS'
         ]);
 
-        $studentId = Auth::guard('students')->id();
+        $student = $request->user();
+        
+        if (!$student) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthorized - please login first'
+            ], 401);
+        }
 
-        // Ambil semua score siswa beserta info mapel & assignment
+        $studentId = $student->id;
+
         $scores = score::with(['assignment.mapel'])
             ->where('siswa_id', $studentId)
             ->where('semester', $request->semester)

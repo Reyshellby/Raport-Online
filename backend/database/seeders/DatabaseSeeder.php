@@ -89,19 +89,19 @@ class DatabaseSeeder extends Seeder
         $guru1 = teacher::create([
             'nama' => 'Ibu Siti Nurhaliza',
             'nip' => '19800115200812001',
-            'password' => Hash::make('guru123'),
+            'password' => Hash::make('guru1234'),
         ]);
 
         $guru2 = teacher::create([
             'nama' => 'Bapak Ahmad Wijaya',
             'nip' => '19750320199003001',
-            'password' => Hash::make('guru456'),
+            'password' => Hash::make('guru4567'),
         ]);
 
         $guru3 = teacher::create([
             'nama' => 'Ibu Rini Handayani',
             'nip' => '19820410200502002',
-            'password' => Hash::make('guru789'),
+            'password' => Hash::make('guru7890'),
         ]);
 
         // 7. Create Teaching Assignments (Penugasan Mengajar)

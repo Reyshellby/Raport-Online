@@ -122,4 +122,37 @@ class TeacherController extends Controller
             'message' => 'Teacher has been delete'
         ], 200);
     }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function updateTeacher(Request $request, string $id)
+    {
+        $data = teacher::find($id);
+
+        if (!$data) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'data not found'
+            ], 404);
+        }
+
+        $validated = $request->validate([
+            'nama' => 'required|string',
+            'password' => 'nullable|min:8',
+        ]);
+
+        $data->nama = $validated['nama'];
+        
+        if (!empty($validated['password'])) {
+            $data->password = $validated['password'];
+        }
+
+        $data->save();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $data
+        ], 200);
+    }
 }

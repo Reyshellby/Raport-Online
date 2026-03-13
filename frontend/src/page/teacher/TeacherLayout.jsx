@@ -1,15 +1,14 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../api/api";
 
-export default function AdminLayout({ children }) {
+export default function TeacherLayout({ children }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleLogout = async () => {
     try {
-      await api.post("/admin/logout");
+      await api.post("/teacher/logout");
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
@@ -18,39 +17,18 @@ export default function AdminLayout({ children }) {
     }
   };
 
-  const navItems = [
-    { path: "/admin/dashboard", label: "Dashboard" },
-    { path: "/admin/manage-admin", label: "Admin" },
-    { path: "/admin/teachers", label: "Guru" },
-    { path: "/admin/students", label: "Siswa" },
-    { path: "/admin/academic-year", label: "Tahun Ajaran" },
-    { path: "/admin/classes", label: "Kelas" },
-    { path: "/admin/major", label: "Jurusan" },
-    { path: "/admin/subject", label: "Mata Pelajaran" },
-    { path: "/admin/assignment", label: "Assignment" },
-  ];
-
   return (
     <div className="bg-gray-950 text-white min-h-screen flex">
       <aside className="w-64 bg-gray-900 border-r border-white/10 p-6 hidden md:flex flex-col">
-        <h2 className="text-2xl font-bold mb-10">Admin Panel</h2>
+        <h2 className="text-2xl font-bold mb-10">Guru Panel</h2>
         <nav className="space-y-3 flex-1 text-sm">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`block hover:text-indigo-400 transition ${
-                location.pathname === item.path ? "text-indigo-400 font-semibold" : ""
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
+          <Link to="/guru/dashboard" className="block hover:text-indigo-400">Dashboard</Link>
+          <Link to="/guru/scores" className="block hover:text-indigo-400">Input Nilai</Link>
         </nav>
         
         <div className="mt-4 mb-6 p-3 bg-gray-800 rounded-lg">
           <p className="text-xs text-gray-400">Logged in as</p>
-          <p className="font-semibold truncate">{user?.username || "Admin"}</p>
+          <p className="font-semibold truncate">{user?.nama || "Guru"}</p>
         </div>
         
         <button 
@@ -64,7 +42,7 @@ export default function AdminLayout({ children }) {
       <main className="flex-1 p-8 space-y-8">
         {/* Mobile Header */}
         <header className="md:hidden flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold">Admin Panel</h2>
+          <h2 className="text-xl font-bold">Guru Panel</h2>
           <button onClick={handleLogout} className="bg-red-600 px-3 py-1 rounded text-sm">
             Logout
           </button>
