@@ -17,11 +17,11 @@ class score extends Model
 
     public function siswa()
     {
-        return $this->belongsTo(student::class);
+        return $this->belongsTo(student::class, 'siswa_id');
     }
 
     public function assignment()
     {
-        return $this->belongsTo(teaching_assignments::class);
+        return $this->belongsTo(teaching_assignments::class, 'teaching_assignment_id');
     }
 }

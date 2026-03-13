@@ -14,15 +14,19 @@ class TeachingAssignment extends Controller
     {
         $assignments = teaching_assignments::with(['guru', 'mapel', 'kelas', 'tahunAjaran'])->get();
 
-
         $result = $assignments->map(function ($item) {
             return [
+                'id' => $item->id,
+                'guruId' => $item->guruId,
                 'guru' => $item->guru->nama,
+                'mapelId' => $item->mapelId,
                 'mapel' => $item->mapel->nama_mapel,
+                'kelasId' => $item->kelasId,
                 'kelas' => $item->kelas->nama_kelas,
-                'tahun_ajaran' => $item->tahunAjaran->nama_tahun,
+                'tahunAjaranId' => $item->tahunAjaranId,
+                'tahun' => $item->tahunAjaran->nama_tahun,
             ];
-        })->groupBy('tahun_ajaran')->sortKeysDesc();
+        });
 
         return response()->json([
             'status' => 'success',

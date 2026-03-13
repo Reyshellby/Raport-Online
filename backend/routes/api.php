@@ -20,6 +20,9 @@ Route::post('admin/login', [AuthController::class, 'loginAdmin']);
 Route::post('teacher/login', [TeacherController::class, 'loginTeacher']);
 Route::post('student/login', [StudentController::class, 'loginStudent']);
 
+// Public route - can be accessed by authenticated users
+Route::get('/getStudentsByClass/{id}', [ClassesController::class, 'getStudentsByClass']);
+
 Route::middleware(['auth:sanctum', 'guard:admins', 'role:admins,admin'])->group(function () {
     Route::get('/admin/getAllAdmin', [AuthController::class, 'getAllAdmin']);
     Route::put('/admin/updateCredentialAdmin/{id}', [AuthController::class, 'updateCredentialAdmin']);
@@ -29,12 +32,14 @@ Route::middleware(['auth:sanctum', 'guard:admins', 'role:admins,admin'])->group(
 
     Route::get('/admin/getAllTeacher', [TeacherController::class, 'getAllTeacher']);
     Route::post('/admin/registerTeacher', [TeacherController::class, 'registerTeacher']);
-    Route::delete('/admin/destroyTeacher', [TeacherController::class, 'destroyTeacher']);
+    Route::put('/admin/updateTeacher/{id}', [TeacherController::class, 'updateTeacher']);
+    Route::delete('/admin/destroyTeacher/{id}', [TeacherController::class, 'destroyTeacher']);
 
     Route::get('/admin/getAllStudent', [StudentController::class, 'getAllStudent']);
     Route::get('/admin/showStudent', [StudentController::class, 'showStudent']);
     Route::post('/admin/registerStudent', [StudentController::class, 'registerStudent']);
-    Route::delete('/admin/destroyStudent', [StudentController::class, 'destroyStudent']);
+    Route::put('/admin/updateStudent/{id}', [StudentController::class, 'updateStudent']);
+    Route::delete('/admin/destroyStudent/{id}', [StudentController::class, 'destroyStudent']);
 
     Route::get('/admin/getAllAcademicYear', [AcademicYear::class, 'getAllAcademicYear']);
     Route::post('/admin/createAcademicYear', [AcademicYear::class, 'createAcademicYear']);
@@ -71,9 +76,10 @@ Route::middleware(['auth:sanctum', 'guard:teachers', 'role:teachers,teacher'])->
 
     Route::get('/teacher/getAllAssignment', [ScoreController::class, 'getAllAssignmentForTeacher']);
     Route::post('/teacher/storeScore', [ScoreController::class, 'storeScoreForTeacher']);
-    });
+    Route::get('/teacher/getStudentsByClass/{id}', [ClassesController::class, 'getStudentsByClass']);
+});
 
-Route::middleware(['auth:sanctum', 'guard:students', 'role:students,student'])->group(function () {
+Route::middleware(['auth:sanctum', 'guard:students'])->group(function () {
     Route::post('/student/logout', [StudentController::class, 'logoutStudent']);
     Route::put('/student/updatePassword/{id}', [StudentController::class, 'updatePasswordStudent']);
 

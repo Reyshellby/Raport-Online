@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('classes', function (Blueprint $table) {
             $table->id();
             $table->string('nama_kelas', 100);
-            $table->enum('tingkat_kelas', [10, 11, 12]);
+            $table->enum('tingkat_kelas', ['X', 'XI', 'XII']);
             $table->foreignId('jurusan_id')->constrained('majors');
             $table->integer('tahun_angkatan')->unsigned();
             $table->timestamps();

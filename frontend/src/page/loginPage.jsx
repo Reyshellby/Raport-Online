@@ -1,18 +1,22 @@
-"use client";
-
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import api from "../api/api";
 
 export default function LoginPage() {
-  const initialForm = {
+  const [role, setRole] = useState("siswa");
+  const [form, setForm] = useState({
     username: "",
     email: "",
     nip: "",
     nis: "",
     password: "",
-  };
-
-  const [role, setRole] = useState("siswa");
-  const [form, setForm] = useState(initialForm);
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const roles = [
     { id: "siswa", label: "Siswa" },
@@ -22,22 +26,70 @@ export default function LoginPage() {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setError("");
   };
 
   const handleRoleChange = (newRole) => {
     setRole(newRole);
-    setForm(initialForm); // 🔥 reset semua field saat role berubah
+    setForm({
+      username: "",
+      email: "",
+      nip: "",
+      nis: "",
+      password: "",
+    });
+    setError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
 
-    console.log("Form Data:", {
-      role,
-      ...form,
-    });
-
-    alert(`Login sebagai ${role} berhasil (simulasi frontend)`);
+    try {
+      let response;
+      
+      if (role === "admin") {
+        response = await api.post("/admin/login", {
+          username: form.username,
+          email: form.email,
+          password: form.password,
+        });
+        
+        if (response.data.status === "success") {
+          localStorage.setItem("token", response.data.token);
+          login(response.data.data, "admin");
+          navigate("/admin/dashboard");
+        }
+      } else if (role === "guru") {
+        response = await api.post("/teacher/login", {
+          nip: form.nip,
+          password: form.password,
+        });
+        
+        if (response.data.status === "success") {
+          localStorage.setItem("token", response.data.token);
+          login(response.data.data, "guru");
+          navigate("/teacher/dashboard");
+        }
+      } else if (role === "siswa") {
+        response = await api.post("/student/login", {
+          nis: form.nis,
+          password: form.password,
+        });
+        
+        if (response.data.status === "success") {
+          localStorage.setItem("token", response.data.token);
+          login(response.data.data, "siswa");
+          navigate("/student/dashboard");
+        }
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError(err.response?.data?.message || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -65,6 +117,12 @@ export default function LoginPage() {
               </button>
             ))}
           </div>
+
+          {error && (
+            <div className="mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-lg text-red-200 text-sm">
+              {error}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* ADMIN */}
@@ -152,9 +210,10 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              className="w-full bg-indigo-600 py-2 rounded-md font-semibold hover:bg-indigo-500 transition-all duration-200 hover:scale-[1.02]"
+              disabled={loading}
+              className="w-full bg-indigo-600 py-2 rounded-md font-semibold hover:bg-indigo-500 transition-all duration-200 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Masuk sebagai {role.charAt(0).toUpperCase() + role.slice(1)}
+              {loading ? "Memproses..." : `Masuk sebagai ${role.charAt(0).toUpperCase() + role.slice(1)}`}
             </button>
           </form>
         </div>
@@ -166,3 +225,4 @@ export default function LoginPage() {
     </div>
   );
 }
+

@@ -14,11 +14,11 @@ class student extends Authenticatable
 
     public function kelas()
     {
-        return $this->belongsTo(classes::class);
+        return $this->belongsTo(classes::class, 'kelas_id');
     }
 
     public function nilai()
     {
-        return $this->hasMany(score::class);
+        return $this->hasMany(score::class, 'siswa_id');
     }
 }

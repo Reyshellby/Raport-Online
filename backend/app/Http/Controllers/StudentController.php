@@ -17,9 +17,12 @@ class StudentController extends Controller
 
         $result = $students->map(function ($item) {
             return [
+                'id' => $item->id,
                 'nama' => $item->nama,
                 'nis' => $item->nis,
                 'kelas' => $item->kelas->nama_kelas,
+                'kelas_id' => $item->kelas_id,
+                'jurusan_id' => $item->jurusan_id,
             ];
         })->groupBy('kelas')->sortKeys();
 
@@ -147,6 +150,39 @@ class StudentController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Student has been delete'
+        ], 200);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function updateStudent(Request $request, string $id)
+    {
+        $data = student::find($id);
+
+        if (!$data) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'data not found'
+            ], 404);
+        }
+
+        $validated = $request->validate([
+            'nama' => 'required|string',
+            'password' => 'nullable|min:8',
+        ]);
+
+        $data->nama = $validated['nama'];
+        
+        if (!empty($validated['password'])) {
+            $data->password = $validated['password'];
+        }
+
+        $data->save();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $data
         ], 200);
     }
 }
